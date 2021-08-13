@@ -19,7 +19,6 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 
 
-app.set("etag", "strong");
 // register view engine
 app.set("view engine", "ejs");
 // views dir is default
@@ -88,6 +87,7 @@ app.get("/", (req, res) => {
 
 app.get("/about", (req, res) => {
   res.render("about", { "title": "About" });
+  app.set("Content-Type", "text/html");
 });
 
 app.get("/about-me", (req, res) => {
@@ -99,14 +99,19 @@ app.get("/about-me", (req, res) => {
 app.get("/blogs", (req, res) => {
   // find all blogs
   Blog.find().sort({ createdAt: -1 })
-    .then(result => res.render("index", { title: "Home", blogs: result }))
+    .then(result => {
+      res.render("index", { title: "Home", blogs: result })
+      app.set("Content-Type", "text/html");
+    })
     .catch(err => console.log("Error:", err));
 });
 
 app.get("/blogs/create", (req, res) => {
   res.render("create", { "title": "Create Blog" });
+  app.set("Content-Type", "text/html");
 });
 
 app.use( (req, res) => {
   res.status(404).render("404", { "title": "404 Error" });
+  app.set("Content-Type", "text/html");
 } );
