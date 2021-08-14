@@ -10,9 +10,13 @@
     <h2>All Blogs</h2>
     <% if (blogs.length > 0) { %>
       <% blogs.forEach( (blog) => { %>
-        <h3 class="blog-title"><%= blog.title %></h3>
-        <p class="blog-body"><%= blog.body %></p>
-        <div class="blog-createTime"><%= blog.createdAt.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" }) %></div>
+        <div class="single-blog">
+          <a href="/blogs/<%= blog._id %>">
+            <h3 class="blog-title"><%= blog.title %></h3>
+            <p class="blog-body"><%= `${blog.body.slice(0, 100)}...` %></p>
+            <div class="blog-createTime"><%= blog.createdAt.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" }) %></div>
+          </a>
+        </div>
       <% }); %>
     <% } else { %>
       <p>No Blogs!</p>

@@ -16,7 +16,7 @@ const uri = "mongodb+srv://vik:HzoU1KXELSUELF6p@simple-blog-tut.l76kf.mongodb.ne
 // imp note: we want our server to listen on port 3000, only after the db is loaded
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(3000 || process.env.PORT, () => console.log("live on port 3000")))
-  .catch(err => console.log(err));
+  .catch(err => console.log("connect or listen err:", err));
 
 
 // register view engine
@@ -28,6 +28,9 @@ app.set("view engine", "ejs");
 
 // static files {imgs, css...}
 app.use(express.static("public"));
+
+// middleware
+app.use(express.urlencoded({ extended: true }));
 
 
 // custom logger middleware
@@ -98,17 +101,48 @@ app.get("/about-me", (req, res) => {
 
 app.get("/blogs", (req, res) => {
   // find all blogs
+  // don't understand how sorting works?
   Blog.find().sort({ createdAt: -1 })
     .then(result => {
       res.render("index", { title: "Home", blogs: result })
       app.set("Content-Type", "text/html");
     })
-    .catch(err => console.log("Error:", err));
+    .catch(err => console.log("Blog.find err:", err));
+});
+
+app.post("/blogs", (req, res) => {
+  // console.log(req.body); // { title: 'New title', body: 'This is the body.' }
+
+  const blog = new Blog(req.body);
+
+  blog.save()
+    .then(result => res.redirect("/blogs"))
+    .catch(err => console.log("blog.save err:", err));
 });
 
 app.get("/blogs/create", (req, res) => {
   res.render("create", { "title": "Create Blog" });
   app.set("Content-Type", "text/html");
+});
+
+// id is the route parameter
+app.get("/blogs/:id", (req, res) => {
+  // gets the :id 
+  const id = req.params.id;
+
+  Blog.findById(id)
+    .then(result => res.render("details", { title: "Single Blog", blog: result }))
+    .catch(err => console.log("blog find err:", err));
+});
+
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+
+  // we can't directly redirect, because we are using a AJAX req
+  Blog.findByIdAndDelete(id)
+    .then(result => res.json({ "redirect": "/blogs" }))  // send a json 
+    .catch(err => console.log(err));
+
 });
 
 app.use( (req, res) => {
