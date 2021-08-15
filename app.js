@@ -58,6 +58,6 @@ app.use("/blogs", blogRoutes);
 
 // 404 page
 app.use( (req, res) => {
-  res.status(404).render("404", { "title": "404 Error" });
+  res.status(404).render("404", { "title": "404 Error", "type": "Page" });
   app.set("Content-Type", "text/html");
 } );
