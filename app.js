@@ -3,7 +3,7 @@
 const morgan = require("morgan");
 const express = require("express");
 const mongoose = require("mongoose");
-const blogRoute = require("./routes/blogRoutes.js")
+const blogRoutes = require("./routes/blogRoutes.js")
 
 const app = express();
 
@@ -97,8 +97,8 @@ app.get("/about-me", (req, res) => {
   res.redirect("/about");
 });
 
-// blog routes
-app.use(blogRoute);
+// blog routes, using express router
+app.use("/blogs", blogRoutes);
 
 // 404 page
 

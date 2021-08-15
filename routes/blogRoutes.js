@@ -5,7 +5,7 @@ const Blog = require("../models/blog.js");
 
 const route = express.Router();
 
-route.get("/blogs", (req, res) => {
+route.get("/", (req, res) => {
   // find all blogs
   // don't understand how sorting works?
   Blog.find().sort({ createdAt: -1 })
@@ -15,11 +15,11 @@ route.get("/blogs", (req, res) => {
     .catch(err => console.log("Blog.find err:", err));
 });
 
-route.post("/blogs", (req, res) => {
+route.post("/", (req, res) => {
   // console.log(req.body); 
   // { title: 'New title', body: 'This is the body.' }
 
-  // html form action
+  // html form action in create.ejs
 
   const blog = new Blog(req.body);
 
@@ -28,12 +28,12 @@ route.post("/blogs", (req, res) => {
     .catch(err => console.log("blog.save err:", err));
 });
 
-route.get("/blogs/create", (req, res) => {
+route.get("/create", (req, res) => {
   res.render("create", { "title": "Create Blog" });
 });
 
 // id is the route parameter
-route.get("/blogs/:id", (req, res) => {
+route.get("/:id", (req, res) => {
   // gets the :id 
   const id = req.params.id;
 
@@ -42,7 +42,7 @@ route.get("/blogs/:id", (req, res) => {
     .catch(err => console.log("blog find err:", err));
 });
 
-route.delete("/blogs/:id", (req, res) => {
+route.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   // we can't directly redirect, because we are using a AJAX req
