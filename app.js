@@ -44,6 +44,9 @@ app.get("/", (req, res) => {
   res.redirect("/blogs");
 });
 
+// blog routes, using express router
+app.use("/blogs", blogRoutes);
+
 app.get("/about", (req, res) => {
   res.render("about", { "title": "About" });
   app.set("Content-Type", "text/html");
@@ -52,9 +55,6 @@ app.get("/about", (req, res) => {
 app.get("/about-me", (req, res) => {
   res.redirect("/about");
 });
-
-// blog routes, using express router
-app.use("/blogs", blogRoutes);
 
 // 404 page
 app.use( (req, res) => {

@@ -7,7 +7,7 @@ const Blog = require("../models/blog.js");
 
 const blog_index = (_req, res) => {
   // find all blogs
-  // don't understand how sorting works?
+  // I still can't figure out how the sort method works!
   Blog.find().sort({ createdAt: -1 })
     .then(result => {
       res.render("index", { title: "Home", blogs: result })
