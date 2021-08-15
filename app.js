@@ -31,7 +31,7 @@ app.set("view engine", "ejs");
 // static files {imgs, css...}
 app.use(express.static("public"));
 
-// form data from create.ejs
+// form input data from create.ejs
 app.use(express.urlencoded({ extended: true }));
 
 // logger middleware {npm}

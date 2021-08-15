@@ -1,55 +1,20 @@
 "use strict";
 
 const express = require("express");
-const Blog = require("../models/blog.js");
+const blogController = require("../controllers/blogControllers.js");
 
+// route behaves like a min app
 const route = express.Router();
 
-route.get("/", (req, res) => {
-  // find all blogs
-  // don't understand how sorting works?
-  Blog.find().sort({ createdAt: -1 })
-    .then(result => {
-      res.render("index", { title: "Home", blogs: result })
-    })
-    .catch(err => console.log("Blog.find err:", err));
-});
+route.get("/", blogController.blog_index);
 
-route.post("/", (req, res) => {
-  // console.log(req.body); 
-  // { title: 'New title', body: 'This is the body.' }
+route.post("/", blogController.blog_create_post);
 
-  // html form action in create.ejs
-
-  const blog = new Blog(req.body);
-
-  blog.save()
-    .then(result => res.redirect("/blogs"))
-    .catch(err => console.log("blog.save err:", err));
-});
-
-route.get("/create", (req, res) => {
-  res.render("create", { "title": "Create Blog" });
-});
+route.get("/create", blogController.blog_create_get);
 
 // id is the route parameter
-route.get("/:id", (req, res) => {
-  // gets the :id 
-  const id = req.params.id;
+route.get("/:id", blogController.blog_details);
 
-  Blog.findById(id)
-    .then(result => res.render("details", { title: "Single Blog", blog: result }))
-    .catch(err => console.log("blog find err:", err));
-});
-
-route.delete("/:id", (req, res) => {
-  const id = req.params.id;
-
-  // we can't directly redirect, because we are using a AJAX req
-  Blog.findByIdAndDelete(id)
-    .then(result => res.json({ "redirect": "/blogs" }))  // send a json 
-    .catch(err => console.log(err));
-
-});
+route.delete("/:id", blogController.blog_delete);
 
 module.exports = route;
