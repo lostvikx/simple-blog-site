@@ -3,7 +3,7 @@
 const morgan = require("morgan");
 const express = require("express");
 const mongoose = require("mongoose");
-const Blog = require("./models/blog.js");
+const blogRoute = require("./routes/blogRoutes.js")
 
 const app = express();
 
@@ -98,52 +98,9 @@ app.get("/about-me", (req, res) => {
 });
 
 // blog routes
+app.use(blogRoute);
 
-app.get("/blogs", (req, res) => {
-  // find all blogs
-  // don't understand how sorting works?
-  Blog.find().sort({ createdAt: -1 })
-    .then(result => {
-      res.render("index", { title: "Home", blogs: result })
-      app.set("Content-Type", "text/html");
-    })
-    .catch(err => console.log("Blog.find err:", err));
-});
-
-app.post("/blogs", (req, res) => {
-  // console.log(req.body); // { title: 'New title', body: 'This is the body.' }
-
-  const blog = new Blog(req.body);
-
-  blog.save()
-    .then(result => res.redirect("/blogs"))
-    .catch(err => console.log("blog.save err:", err));
-});
-
-app.get("/blogs/create", (req, res) => {
-  res.render("create", { "title": "Create Blog" });
-  app.set("Content-Type", "text/html");
-});
-
-// id is the route parameter
-app.get("/blogs/:id", (req, res) => {
-  // gets the :id 
-  const id = req.params.id;
-
-  Blog.findById(id)
-    .then(result => res.render("details", { title: "Single Blog", blog: result }))
-    .catch(err => console.log("blog find err:", err));
-});
-
-app.delete("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-
-  // we can't directly redirect, because we are using a AJAX req
-  Blog.findByIdAndDelete(id)
-    .then(result => res.json({ "redirect": "/blogs" }))  // send a json 
-    .catch(err => console.log(err));
-
-});
+// 404 page
 
 app.use( (req, res) => {
   res.status(404).render("404", { "title": "404 Error" });
