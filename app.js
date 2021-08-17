@@ -4,13 +4,11 @@ const morgan = require("morgan");
 const express = require("express");
 const mongoose = require("mongoose");
 const blogRoutes = require("./routes/blogRoutes.js");
-const details = require("./config.js");
+const uri = require("./mongo-uri.js");
 
 const app = express();
 
 // connect to mongodb
-
-const uri = `mongodb+srv://${details.user}:${details.passDB}@simple-blog-tut.l76kf.mongodb.net/simple-blog-tut?retryWrites=true&w=majority`;
 
 // connect to db
 
