@@ -1,4 +1,5 @@
 node_modules
+lorem.html
 config.js
 mongo-uri.js
 *.log

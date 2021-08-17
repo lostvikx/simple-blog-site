@@ -10,6 +10,6 @@ Used the MVC standard in web-development. Controllers just makes managing and re
 
 I enjoyed building this project.
 
-To use this project just create a MongoDB cloud account, then create a new collection and name it whatever, then update the `config-test.js` file.
+To use this project just create a MongoDB cloud account, then create a new collection and name it whatever you like, then update the `config-test.js` and `mongo-uri-test.js` in the [test](./test) directory.
 
-&copy; Copyright 2021 | Vikram Negi
+Copyright &copy; 2021 | Vikram Negi
